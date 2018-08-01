@@ -75,18 +75,25 @@ func (m MongoRepo) RemoveLegacy(newTs map[string]*task.EtlTask) error {
 	defer session.Close()
 	clts := session.DB(m.dbName).C(m.cltName)
 
-	taskNames := m.getTaskNames(newTs)
-
-	if err := clts.Remove(bson.M{
-		"taskName": bson.M{"$not": bson.M{"$in": taskNames}},
-	}); err != nil {
+	totalCount, err := clts.Count()
+	if err != nil {
 		return err
+	}
+
+	if totalCount > 0 {
+		taskNames := m.changeToTaskNameArray(newTs)
+
+		if err = clts.Remove(bson.M{
+			"taskName": bson.M{"$not": bson.M{"$in": taskNames}},
+		}); err != nil {
+			return err
+		}
 	}
 
 	return nil
 }
 
-func (m MongoRepo) getTaskNames(newTs map[string]*task.EtlTask) []string {
+func (m MongoRepo) changeToTaskNameArray(newTs map[string]*task.EtlTask) []string {
 	taskNames := []string{}
 	for k := range newTs {
 		taskNames = append(taskNames, k)
