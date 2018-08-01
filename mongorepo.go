@@ -12,8 +12,8 @@ type MongoRepo struct {
 	dbName  string
 }
 
-func NewMongoRepo(connStr string, dbName string, cltName string) *MongoRepo {
-	m := &MongoRepo{
+func NewMongoRepo(connStr string, dbName string, cltName string) MongoRepo {
+	m := MongoRepo{
 		cltName: cltName,
 		dbName:  dbName,
 		connStr: connStr,
