@@ -17,7 +17,7 @@ func TestGetAll(t *testing.T) {
 func TestInsertOrUpdate(t *testing.T) {
 	aRepo := NewMongoRepo("mongodb://admin:followme@192.168.8.11:27017?authSource=admin", "crm_datastatistics", "dolphin")
 	newStatus := task.TaskStatus{
-		TaskName: "test",
+		TaskName: "test4",
 		Status: task.Status{
 			State:            task.Completed,
 			LastExecuteCost:  3,

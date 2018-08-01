@@ -83,8 +83,8 @@ func (m MongoRepo) RemoveLegacy(newTs map[string]*task.EtlTask) error {
 	if totalCount > 0 {
 		taskNames := m.changeToTaskNameArray(newTs)
 
-		if err = clts.Remove(bson.M{
-			"taskName": bson.M{"$not": bson.M{"$in": taskNames}},
+		if _, err = clts.RemoveAll(bson.M{
+			"taskname": bson.M{"$not": bson.M{"$in": taskNames}},
 		}); err != nil {
 			return err
 		}
