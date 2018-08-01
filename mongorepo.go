@@ -22,7 +22,7 @@ func NewMongoRepo(connStr string, dbName string, cltName string) MongoRepo {
 	return m
 }
 
-func (m *MongoRepo) GetAll() ([]task.TaskStatus, error) {
+func (m MongoRepo) GetAll() ([]task.TaskStatus, error) {
 	session, err := mgo.Dial(m.connStr)
 	if err != nil {
 		return nil, err
@@ -38,7 +38,7 @@ func (m *MongoRepo) GetAll() ([]task.TaskStatus, error) {
 	return result, nil
 }
 
-func (m *MongoRepo) InsertOrUpdate(ts task.TaskStatus) error {
+func (m MongoRepo) InsertOrUpdate(ts task.TaskStatus) error {
 	session, err := mgo.Dial(m.connStr)
 	if err != nil {
 		return err
@@ -67,7 +67,7 @@ func (m *MongoRepo) InsertOrUpdate(ts task.TaskStatus) error {
 	return nil
 }
 
-func (m *MongoRepo) RemoveLegacy(newTs map[string]*task.EtlTask) error {
+func (m MongoRepo) RemoveLegacy(newTs map[string]*task.EtlTask) error {
 	session, err := mgo.Dial(m.connStr)
 	if err != nil {
 		return err
@@ -86,9 +86,9 @@ func (m *MongoRepo) RemoveLegacy(newTs map[string]*task.EtlTask) error {
 	return nil
 }
 
-func (m *MongoRepo) getTaskNames(newTs map[string]*task.EtlTask) []string {
+func (m MongoRepo) getTaskNames(newTs map[string]*task.EtlTask) []string {
 	taskNames := []string{}
-	for k, _ := range newTs {
+	for k := range newTs {
 		taskNames = append(taskNames, k)
 	}
 
